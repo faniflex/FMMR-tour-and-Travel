@@ -1,0 +1,29 @@
+body{
+  background:url(header-background2.jpg);
+  display: block;
+}
+.home{
+  position: relative;
+  margin-top: 115px;
+  margin-left: 190px;
+  font-size: larger;
+  font-weight:bold;
+  color: rgb(239, 214, 117);
+  background-color: rgb(52, 52, 239);
+  border: none;
+  height: 50px;
+}
+.home:hover{
+  color: blue;
+  background-color: rgb(239, 214, 117);
+}
+.home:active{
+  opacity: 0.8;
+}
+.thanks{
+  margin: 70px 190px;
+  width: 70%;
+  height: 80%;
+  position: absolute;
+  border-radius: 50px;
+}
