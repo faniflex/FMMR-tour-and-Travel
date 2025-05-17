@@ -1,36 +1,25 @@
 <?php
 session_start();
-$email = "";
+$fname = "";
+$birthdate = "";
 $message = "";
 $error = "";
 
-// Database connection
 $conn = mysqli_connect("localhost", "root", "", "db");
 
-if(isset($_POST['reset_password'])) {
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+if(isset($_POST['verify_user'])) {
+    $fname = mysqli_real_escape_string($conn, $_POST['fname']);
+    $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
     
-    // Check if email exists
-    $sql = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+    $sql = "SELECT * FROM users WHERE firstname='$fname' AND birthdate='$birthdate' LIMIT 1";
     $result = mysqli_query($conn, $sql);
     
     if(mysqli_num_rows($result) > 0) {
-        // Generate a unique token
-        $token = bin2hex(random_bytes(32));
-        $expires = date("Y-m-d H:i:s", strtotime("+1 hour"));
-        
-        // Store token in database
-        $sql = "UPDATE users SET reset_token='$token', reset_expires='$expires' WHERE email='$email'";
-        if(mysqli_query($conn, $sql)) {
-            // For local development, show the reset link directly
-            $reset_link = "http://localhost/your_folder/reset_password.php?token=$token";
-            $message = "For local development, use this reset link: <a href='$reset_link'>$reset_link</a><br><br>";
-            $message .= "This link will expire in 1 hour.";
-        } else {
-            $error = "Database error: " . mysqli_error($conn);
-        }
+        $_SESSION['reset_user'] = $fname;
+        header("Location: reset_password.php");
+        exit();
     } else {
-        $error = "No account found with that email address.";
+        $error = "No account found with those details.";
     }
 }
 ?>
@@ -39,8 +28,6 @@ if(isset($_POST['reset_password'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
     <link rel="stylesheet" href="form.css">
 </head>
@@ -53,17 +40,18 @@ if(isset($_POST['reset_password'])) {
             <div style="color: red; margin-bottom: 15px;"><?php echo $error; ?></div>
         <?php endif; ?>
         
-        <?php if($message): ?>
-            <div style="color: green; margin-bottom: 15px;"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <div class="input-box">
+            <span class="details">Username</span>
+            <input type="text" name="fname" placeholder="Enter your username" required>
+        </div>
         
         <div class="input-box">
-            <span class="details">Email</span>
-            <input type="email" name="email" placeholder="Enter your email" required>
+            <span class="details">Birthdate</span>
+            <input type="date" name="birthdate" required>
         </div>
         
         <div class="button">
-          <input type="submit" name="reset_password" value="Get Reset Link">
+          <input type="submit" name="verify_user" value="Verify Identity">
         </div>
       </form>
       <div style="text-align: center; margin-top: 15px;">
