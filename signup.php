@@ -17,6 +17,7 @@ if(isset($_POST['SIGNUP'])){
     $sex=mysqli_real_escape_string($conn, $_POST['sex']);
     $pass1=mysqli_real_escape_string($conn, $_POST['pass1']);
     $pass2=mysqli_real_escape_string($conn, $_POST['pass2']);
+    $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
 
     //validation
     if($pass1!=$pass2){
@@ -34,7 +35,8 @@ if(isset($_POST['SIGNUP'])){
 
     //finally register
     if(count($err)===0){
-        $query="insert into users (firstname,lastname,sex,email,password) values('$fname', '$lname', '$sex', '$email', '$pass1')";
+        $query="insert into users (firstname,lastname,sex,email,password,birthdate) 
+            values('$fname', '$lname', '$sex', '$email', '$pass1', '$birthdate')";
         mysqli_query($conn, $query);
         $congra="You are successfully registered! please login!";
     }
@@ -67,6 +69,8 @@ if(isset($_POST['SIGNUP'])){
             <input type="radio" name="sex" id="" value="Female" required>Female
             <input type="password" name="pass1" id="" placeholder="Enter password" required>
             <input type="password" name="pass2" id="" placeholder="Confirm password" required>
+            <input type="date" name="birthdate" id="birthdate" required>
+            <label for="birthdate">Birthdate</label>
 
             <input type="submit" value="SIGNUP" name="SIGNUP">
             Already a member? <a href="login.php" style="color:yellow;">LOGIN</a>
