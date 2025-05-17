@@ -69,9 +69,8 @@ if(isset($_POST['SIGNUP'])){
             <input type="radio" name="sex" id="" value="Female" required>Female
             <input type="password" name="pass1" id="" placeholder="Enter password" required>
             <input type="password" name="pass2" id="" placeholder="Confirm password" required>
-            <input type="date" name="birthdate" id="birthdate" required>
             <label for="birthdate">Birthdate</label>
-
+            <input type="date" name="birthdate" id="birthdate" required>
             <input type="submit" value="SIGNUP" name="SIGNUP">
             Already a member? <a href="login.php" style="color:yellow;">LOGIN</a>
 
