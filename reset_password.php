@@ -1,46 +1,34 @@
 <?php
 session_start();
+if(!isset($_SESSION['reset_user'])) {
+    header("Location: forgot_password.php");
+    exit();
+}
+
 $new_password = "";
 $confirm_password = "";
 $message = "";
 $error = "";
 
-// Database connection
 $conn = mysqli_connect("localhost", "root", "", "db");
 
-if(isset($_GET['token'])) {
-    $token = mysqli_real_escape_string($conn, $_GET['token']);
+if(isset($_POST['update_password'])) {
+    $new_password = mysqli_real_escape_string($conn, $_POST['new_password']);
+    $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
+    $fname = $_SESSION['reset_user'];
     
-    // Verify token and check expiration
-    $sql = "SELECT * FROM users WHERE reset_token='$token' AND reset_expires > NOW() LIMIT 1";
-    $result = mysqli_query($conn, $sql);
-    
-    if(mysqli_num_rows($result) == 0) {
-        $error = "Invalid or expired token. Please request a new password reset link.";
+    if($new_password != $confirm_password) {
+        $error = "Passwords do not match.";
     } else {
-        $user = mysqli_fetch_assoc($result);
+        $sql = "UPDATE users SET password='$new_password' WHERE firstname='$fname'";
         
-        if(isset($_POST['update_password'])) {
-            $new_password = mysqli_real_escape_string($conn, $_POST['new_password']);
-            $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
-            
-            if($new_password != $confirm_password) {
-                $error = "Passwords do not match.";
-            } else {
-                // Update password and clear reset token
-                $email = $user['email'];
-                $sql = "UPDATE users SET password='$new_password', reset_token=NULL, reset_expires=NULL WHERE email='$email'";
-                
-                if(mysqli_query($conn, $sql)) {
-                    $message = "Password updated successfully! You can now <a href='login.php'>login</a> with your new password.";
-                } else {
-                    $error = "Error updating password: " . mysqli_error($conn);
-                }
-            }
+        if(mysqli_query($conn, $sql)) {
+            $message = "Password updated successfully! You can now <a href='login.php'>login</a>.";
+            unset($_SESSION['reset_user']);
+        } else {
+            $error = "Error updating password: " . mysqli_error($conn);
         }
     }
-} else {
-    $error = "No token provided.";
 }
 ?>
 
@@ -48,8 +36,6 @@ if(isset($_GET['token'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
     <link rel="stylesheet" href="form.css">
 </head>
@@ -62,7 +48,7 @@ if(isset($_GET['token'])) {
       <?php elseif($message): ?>
           <div style="color: green; margin-bottom: 15px;"><?php echo $message; ?></div>
       <?php else: ?>
-          <form action="reset_password.php?token=<?php echo htmlspecialchars($token); ?>" method="post">
+          <form action="reset_password.php" method="post">
             <div class="input-box">
                 <span class="details">New Password</span>
                 <input type="password" name="new_password" placeholder="Enter new password" required>
