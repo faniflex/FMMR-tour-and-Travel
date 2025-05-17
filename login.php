@@ -45,6 +45,7 @@ if(isset($_POST['LOGIN'])){
             <input type="password" name="password" id="" placeholder="Enter password">
             <input type="submit" value="LOGIN" name="LOGIN">
             Not yet a member? <a href="signup.php" style="color:yellow;">SIGNUP</a>
+             <a href="forgot_password.php" style="color:yellow;">Forgot Password?</a>
 
         </form>
     </div>
