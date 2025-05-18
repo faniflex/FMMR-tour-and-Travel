@@ -1,3 +1,13 @@
+<?php
+$booking_date = date('Y-m-d H:i:s'); // Current timestamp
+
+// Modify your INSERT query to include booking_date:
+$query = "INSERT INTO book (Full_name, arrival_date, email, departure_date, phone_number, address, distination, special_package, adult, child, room_type, guide, gender, booking_date) 
+          VALUES ('$fname', '$ardate', '$email', '$Dedate', '$ponumber', '$address', '$distination', '$spackage', '$adult', '$child', '$roomtype', '$guide', '$gender', '$booking_date')";
+
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
