@@ -117,5 +117,23 @@
     </div>
   </div>
 
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const arrival = new Date(document.querySelector('input[name="arrival_date"]').value);
+    const departure = new Date(document.querySelector('input[name="departure_date"]').value);
+    
+    if (arrival >= departure) {
+        alert('Departure date must be after arrival date');
+        e.preventDefault();
+    }
+    
+    const phone = document.querySelector('input[name="phone_number"]').value;
+    if (!/^[0-9+]{10,15}$/.test(phone)) {
+        alert('Please enter a valid phone number');
+        e.preventDefault();
+    }
+});
+</script>
+  
 </body>
 </html>
