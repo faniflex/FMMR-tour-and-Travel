@@ -11,21 +11,23 @@ $report_type = $_GET['type'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 
-$query = "SELECT 
-            DATE(booking_date) as booking_day,
-            distination,
-            special_package,
-            room_type,
-            COUNT(*) as total_bookings,
-            SUM(adult) as total_adults,
-            SUM(child) as total_children,
-            SUM(adult + child) as total_visitors
-          FROM book
-          WHERE DATE(booking_date) BETWEEN '$start_date' AND '$end_date'
-          GROUP BY distination, special_package, room_type, DATE(booking_date)
-          ORDER BY booking_day DESC";
+$stmt = $conn->prepare("SELECT 
+    DATE(booking_date) as booking_day,
+    distination,
+    special_package,
+    room_type,
+    COUNT(*) as total_bookings,
+    SUM(adult) as total_adults,
+    SUM(child) as total_children,
+    SUM(adult + child) as total_visitors
+FROM book
+WHERE DATE(booking_date) BETWEEN ? AND ?
+GROUP BY distination, special_package, room_type, DATE(booking_date)
+ORDER BY booking_day DESC");
 
-$result = mysqli_query($conn, $query);
+$stmt->bind_param("ss", $start_date, $end_date);
+$stmt->execute();
+$result = $stmt->get_result();
 
 header('Content-Type: text/csv');
 header('Content-Disposition: attachment; filename="tour_report_'.date('Y-m-d').'.csv"');
