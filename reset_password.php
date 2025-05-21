@@ -30,6 +30,13 @@ if(isset($_POST['update_password'])) {
         }
     }
 }
+if(strlen($new_password) < 8) {
+    $error = "Password must be at least 8 characters long";
+} elseif (!preg_match("/[A-Z]/", $new_password)) {
+    $error = "Password must contain at least one uppercase letter";
+} elseif (!preg_match("/[0-9]/", $new_password)) {
+    $error = "Password must contain at least one number";
+}
 ?>
 
 <!DOCTYPE html>
