@@ -1,17 +1,29 @@
 <?php
 session_start();
 
-$error = '';
+if (!isset($_SESSION['login_attempts'])) {
+    $_SESSION['login_attempts'] = 0;
+}
+
 if(isset($_POST['login'])) {
+    // Add delay if too many attempts
+    if ($_SESSION['login_attempts'] >= 3) {
+        sleep(2); // 2 second delay
+    }
+    
     $username = $_POST['username'];
     $password = $_POST['password'];
     
-    // Change these to your preferred admin credentials
-    if($username === 'admin' && $password === 'admin123') {
+    // Use password_hash() in production instead of plain text
+    $hashed_password = password_hash('admin123', PASSWORD_DEFAULT); // Store this in a config file in production
+    
+    if($username === 'admin' && password_verify($password, $hashed_password)) {
         $_SESSION['admin'] = true;
+        $_SESSION['login_attempts'] = 0; // Reset attempts
         header("Location: reports.php");
         exit();
     } else {
+        $_SESSION['login_attempts']++;
         $error = "Invalid username or password";
     }
 }
