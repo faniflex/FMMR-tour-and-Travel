@@ -1,4 +1,14 @@
 <?php
+
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/error_log.txt');
+
+// when catching errors
+if(!$result) {
+    error_log("Database error: " . mysqli_error($conn));
+    die("An error occurred. Please try again later.");
+}
 session_start();
 if(!isset($_SESSION['admin'])) {
     header("Location: admin_login.php");
