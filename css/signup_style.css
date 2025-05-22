@@ -1,60 +1,120 @@
-body{
-    margin: 0px;
-    padding: 0px;
+body {
+    margin: 0;
+    padding: 0;
     background-image: url(coffee.jpg);
     background-size: cover;
+    background-position: center;
     height: 100vh;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 2s ease-in-out;
 }
-.box2{
-    height: 430px;
-    width: 250px;
-    background-color: rgb(2, 0, 5, 0.905);
-    opacity: 80%;
-    position: absolute;
+
+/* Fade-in animation for page load */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.box2 {
+    width: 320px;
+    background: rgba(0, 0, 0, 0.7);
     color: white;
-    transform: translate(-50%,-50%);
-    left: 50%;
-    top: 50%;
-    padding: 25px 25px;
-    border-radius: 30px;
+    padding: 35px 30px;
+    border-radius: 25px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    animation: slideUp 1.5s ease;
 }
-h1{
-    margin: 0px;
-    padding: 0 0 10px;
+
+/* Slide-in animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    margin: 0 0 20px;
+    padding: 0;
     text-align: center;
-    font-size: 25px;
+    font-size: 28px;
+    color: #00ffff;
+    animation: pulse 2s infinite;
 }
-.err{
-    color: #fa0909; 
+
+/* Title pulse animation */
+@keyframes pulse {
+    0%, 100% { color: #00ffff; }
+    50% { color: #1de9b6; }
 }
-.box2 input{
+
+.err {
+    color: #ff4d4d;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.box2 input {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
     color: #fff;
+    transition: all 0.3s ease;
 }
-.box2 input[type="text"], input[type="password"], input[type="email"]{
+
+.box2 input[type="text"],
+.box2 input[type="password"],
+.box2 input[type="email"] {
     border: none;
-    border-bottom: 1px solid #fff;
+    border-bottom: 2px solid #fff;
     background-color: transparent;
     outline: none;
     height: 40px;
-    columns: #fff;
-    font-size: 15px;
+    transition: border-color 0.3s ease-in-out;
 }
-.box2 input[type="radio"]{
+
+.box2 input[type="text"]:focus,
+.box2 input[type="password"]:focus,
+.box2 input[type="email"]:focus {
+    border-bottom: 2px solid #00ffff;
+}
+
+.box2 input[type="radio"] {
     width: auto;
+    margin-right: 5px;
+    accent-color: #00ffff;
 }
-.box2 input[type="submit"]{
+
+.box2 label {
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+.box2 input[type="submit"] {
     border: none;
     outline: none;
-    height: 40px;
-    background-color: aquamarine;
-    color: #fff;
-    font-size: 18px;
-    border-radius: 20px;
+    height: 45px;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+    transition: all 0.3s ease-in-out;
 }
-.box2 input[type="submit"]:hover{
+
+.box2 input[type="submit"]:hover {
     cursor: pointer;
-    background-color: #ffc107;
+    background: linear-gradient(to right, #ffc107, #ff5722);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+    transform: scale(1.05);
 }
